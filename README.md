@@ -1,1 +1,1 @@
-# fullstackopme exercise
+# fullstackopen exercise
