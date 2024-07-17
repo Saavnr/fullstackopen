@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-const Heading = ({text}) => <><h1>{text}</h1></>
+const Heading = ({text}) => <h1>{text}</h1>
 
-const Button = ({text, onClick}) => <><button onClick={onClick}>{text}</button></>
+const Button = ({text, onClick}) => <button onClick={onClick}>{text}</button>
 
 const Anecdote = ({text, votes}) => {
   return(
