@@ -1,56 +1,9 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
-
-const Notification = ({message, messageType}) => {
-  if (message === null) {
-    return null
-  }
-
-  return (
-    <div className={messageType}>
-      {message}
-    </div>
-  )
-}
-
-const Filter = ({filterValue, handleFilterChange}) => {
-  return(
-    <div>
-      filter shown with <input type="text" value={filterValue} onChange={handleFilterChange}/>
-    </div>
-  )
-}
-
-const Person = ({person, handleDelete}) => {
-  return(
-    <div>
-      {person.name} {person.number}
-      <button onClick={() => handleDelete(person.id, person.name)}>delete</button>
-    </div>
-  )
-}
-
-const Persons = ({persons, handleDelete}) => {
-  return (
-    <div>
-      {persons.map(person => 
-        <Person key={person.name} person={person} handleDelete={handleDelete}/>
-      )}
-    </div>
-  )
-}
-
-const PersonForm = ({formHandler, newName, handleNameChange, newNumber, handleNumberChange}) => {
-  return(
-    <form onSubmit={formHandler}>
-      <div>name: <input value={newName} onChange={handleNameChange} /></div>
-      <div>number: <input value={newNumber} onChange={handleNumberChange} /></div>
-      
-      <div><button type="submit">add</button></div>
-    </form>
-  )
-}
-
+import Notification from './components/Notifications'
+import Filter from './components/Filter'
+import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -112,17 +65,17 @@ const App = () => {
   }
 
 
-  const handleDelete = (id, name) => {
-    if(confirm(`Delete ${name}?`)){
+  const handleDelete = (person) => {
+    if(confirm(`Delete ${person.name}?`)){
       personService
-        .remove(id)
-        .then(deletedPerson => {
-          setPersons(persons.filter(person => person.id !== deletedPerson.id))
-          sendNotification('success', `Deleted ${deletedPerson.name}`)
+        .remove(person.id)
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== person.id))
+          sendNotification('success', `Deleted ${person.name}`)
         })
         .catch(error => {
-          sendNotification('error', `Information of ${name} has already been removed from server`)
-          setPersons(persons.filter(person => person.name !== name))
+          setPersons(persons.filter(person => person.name !== person.name))
+          sendNotification('error', `Information of ${person.name} has already been removed from server`)
         })
     }
   }
